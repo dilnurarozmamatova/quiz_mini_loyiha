@@ -1,1 +1,1 @@
-# quiz_mini_loyiha
+# quiz_mini_loyiha haqida
