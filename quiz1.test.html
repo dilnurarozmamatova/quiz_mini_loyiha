@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advanced Quiz App</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.option {
+  background: #334155;
+  color: white;
+}
+
+.option:hover {
+  background: #475569;
+}
+
+.progress {
+  height: 10px;
+  background: #334155;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.bar {
+  height: 10px;
+  background: #22c55e;
+  width: 0%;
+}
+
+.timer {
+  color: #facc15;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <h2>🧠 Advanced Quiz App</h2>
+
+  <p class="timer" id="timer">Time: 60</p>
+
+  <div class="progress">
+    <div class="bar" id="bar"></div>
+  </div>
+
+  <h3 id="question"></h3>
+
+  <div id="options"></div>
+
+  <h3 id="result"></h3>
+</div>
+
+<script>
+const questions = [
+{
+q: "She ___ to school every day.",
+options: ["go", "goes", "going", "gone"],
+answer: 1
+},
+{
+q: "They ___ football now.",
+options: ["is", "are", "am", "be"],
+answer: 1
+},
+{
+q: "I ___ a book yesterday.",
+options: ["read", "reads", "reading", "red"],
+answer: 0
+},
+{
+q: "He ___ from Uzbekistan.",
+options: ["is", "are", "am", "be"],
+answer: 0
+},
+{
+q: "We ___ dinner at 7.",
+options: ["have", "has", "having", "had"],
+answer: 0
+}
+];
+
+let current = 0;
+let score = 0;
+let time = 60;
+
+// shuffle questions
+questions.sort(() => Math.random() - 0.5);
+
+function loadQuestion() {
+  if (current >= questions.length) {
+    showResult();
+    return;
+  }
+
+  let q = questions[current];
+
+  document.getElementById("question").innerText = q.q;
+
+  let html = "";
+  q.options.forEach((opt, i) => {
+    html += `<button class="option" onclick="check(${i})">${opt}</button>`;
+  });
+
+  document.getElementById("options").innerHTML = html;
+
+  // progress bar
+  let percent = (current / questions.length) * 100;
+  document.getElementById("bar").style.width = percent + "%";
+}
+
+function check(i) {
+  if (i === questions[current].answer) {
+    score++;
+  }
+  current++;
+  loadQuestion();
+}
+
+function showResult() {
+  document.getElementById("question").innerHTML = "";
+  document.getElementById("options").innerHTML = "";
+  document.getElementById("result").innerHTML =
+    "🎉 Your score: " + score + " / " + questions.length;
+}
+
+// timer
+setInterval(() => {
+  time--;
+  document.getElementById("timer").innerText = "Time: " + time;
+
+  if (time <= 0) {
+    showResult();
+  }
+}, 1000);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
